@@ -38,17 +38,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Lowercase Repository Name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
-
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile
           push: true
-          with:
-           context: .
-           file: ./Dockerfile
-           push: true
-           tags: ghcr.io/srujannnnnnn/weather-devops-app:latest
+          tags: ghcr.io/srujannnnnnn/weather-devops-app:latest
