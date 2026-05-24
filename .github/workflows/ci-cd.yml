@@ -1,47 +1,35 @@
-name: CI/CD Pipeline
+name: Deploy Weather App to Pages
 
 on:
   push:
     branches: [main]
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  test:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Python Runtime
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      - name: Build Web Page
+        run: python app.py
 
-      - name: Run automated Pytest
-        run: pytest test_app.py
-
-  build-and-push:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v4
-
-      - name: Log in to GitHub Container Registry (GHCR)
-        uses: docker/login-action@v3
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          path: '.'
 
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ghcr.io/srujannnnnnn/weather-devops-app:latest
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
