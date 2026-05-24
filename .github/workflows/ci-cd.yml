@@ -47,4 +47,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ env.REPO_NAME }}:latest
+          with:
+           context: .
+           file: ./Dockerfile
+           push: true
+           tags: ghcr.io/srujannnnnnn/weather-devops-app:latest
