@@ -5,8 +5,8 @@ weather_data = {
     "status": "online",
     "message": "Welcome to the DevOps Weather Portal!",
     "city": "Mysuru",
-    "temperature": "30°C",
-    "condition": "Sunny"
+    "temperature": "17°C",
+    "condition": "Cloudy"
 }
 
 # This script generates a beautiful HTML index file when run by the pipeline
